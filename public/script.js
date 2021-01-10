@@ -1,3 +1,5 @@
+//const { text } = require("express");
+
 const socket = io('/');
 const videoGrid = document.getElementById('video-grid');
 const myVideo = document.createElement('video');
@@ -49,4 +51,22 @@ const addVideoStream = (video, stream)=>{
         video.play();
     })
     videoGrid.append(video);
+}
+
+let text = $('input')
+
+$('html').keydown((e)=>{
+    if(e.which ==13 && text.val().length !==0){
+        socket.emit('message', text.val());
+        text.val('');
+    }
+});
+
+socket.on('createMessage', message=>{
+    $('.messages').append(`<li class="message"><b>User</b><br/>${message}</li>`)
+})
+
+const scrollToBotton = () =>{
+    let d = $('.main__chat_window');
+    d.scrollTop(d.prop("scrollHight"));
 }
